@@ -3,33 +3,26 @@ let
     dataFinal = #date(2024, 12, 31),
     dias = List.Dates(
         dataInicial, 
-        Number.From(dataFinal - dataInicial) + 1, 
+        Duration.Days(dataFinal - dataInicial) + 1, 
         #duration(1, 0, 0, 0)
     ),
     tabela = #table(
         type table[
             Data = date,
-            Mes = number,
-            MesNome = text,
-            MesNomeAbreviado = text,
-            Ano = number,
-            MesAnoNome = text,
-            MesInicio = number
+            Ano = Int64.Type,
+            Mes = text,
+            MesInicio = date
         ], 
         List.Transform(
             dias, 
             each {
                 _,
-                Date.Month(_),
-                Date.MonthName(_, "pt-BR"),
-                Text.Start(Date.MonthName(_, "pt-BR"), 3),
                 Date.Year(_),
-                Date.ToText(_, "MMM-yy"),
+                Text.Proper(Date.ToText(_, "MMM-yy")),
                 Date.StartOfMonth(_)
             }
         )      
     )
 in
     tabela
-
-
+    
